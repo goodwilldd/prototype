@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/jdbc
+		http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+	<!-- 로그 출력을 하기위해서는 mysql_datasource => logDataSource_pos 로 변경 -->
+	<!-- transaction manager -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="logDataSource_pos" />
+	</bean>
+
+	<!-- transaction annotation -->
+	<tx:annotation-driven />
+
+	<!-- ==== mybatis sessionFactory by edit sylee@in-soft.co.kr ==== -->
+	<!-- 로그 출력을 하기위해서는 mysql_datasource => logDataSource_pos 로 변경 -->
+	<bean id="sqlSessionFactory" class="kr.pe.goodwilldd.core.mybatis.CustomSqlSessionFactoryBean">
+		<property name="dataSource" ref="logDataSource_pos" />
+		<!-- typeAlias Object Auto Scannig -->
+		<property name="typeAliasesPackage" value="kr.pe.goodwilldd.**.model"></property>
+		<!-- query files -->
+		<property name="mapperLocations" value="classpath:common/mapper/*.xml" />
+	</bean>
+
+	<!-- ==== mybatis sqlSessionTemplate ==== -->
+	<!-- Execute Type REUSE (default) -->
+	<bean id="sqlSessionReuseTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+		<constructor-arg index="1" value="REUSE" />
+	</bean>
+	<!-- Execute Type REUSE (default) -->
+	<!-- <bean id="sqlSessionBatchTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+		<constructor-arg index="1" value="BATCH" />
+	</bean> -->
+	
+	<!-- mapper auto scanning -->
+	<bean id="myBatisMapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="kr.pe.goodwilldd.**.mapper.normal.**"></property>
+		<property name="annotationClass" value="org.springframework.stereotype.Repository" />
+		<property name="sqlSessionTemplateBeanName" value="sqlSessionReuseTemplate" />
+	</bean>
+	
+	<bean id="myBatisBatchMapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="kr.pe.goodwilldd.**.mapper.batch.**"></property>
+		<property name="annotationClass" value="org.springframework.stereotype.Repository" />
+		<property name="sqlSessionTemplateBeanName" value="sqlSessionReuseTemplate" />
+	</bean>
+</beans>

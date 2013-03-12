@@ -1,0 +1,25 @@
+<div xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<c:url value="/home.htm" var="home" />
+	<c:url value="/exp.htm" var="exception1"/>
+	<c:url value="/exp2.htm" var="exception2"/>
+	<c:url value="/test.json" var="test_json"/>
+	<c:url value="/test.xml" var="test_xml"/>
+	<c:url value="/phome.htm" var="phome"/>
+	<c:url value="/tiles3.htm" var="tiles3"/>
+	<div class="header well">
+		<img src="${imgUrl }/springsource_banner_green.png"/>
+		<div class="page-header">
+			<h1>${title}</h1>
+		</div>	
+		<ul>
+			<li><a href="${home}">home</a></li>
+			<li><a href="${exception1}">exception1</a></li>
+			<li><a href="${exception2}">exception2</a></li>
+			<li><a href="${test_json}">test_json</a></li>
+			<li><a href="${test_xml}">test_xml</a></li>
+			<li><a href="${phome}">phome</a></li>
+			<li><a href="${tiles3}">tiles3</a></li>
+		</ul>
+	</div>
+</div>

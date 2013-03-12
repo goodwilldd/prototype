@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+	<!-- 개발 -->
+	<!-- Appenders -->
+	<appender name="console" class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.out" />
+		<param name="encoding" value="UTF-8"/>
+		<param name="ImmediateFlush" value="true"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<!-- <param name="ConversionPattern" value="%-5p: %c - %m%n" /> -->
+			<!-- <param name="ConversionPattern" value="%d [%t] %-5p %c (%F:%L) - %m%n" /> -->
+			<param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss}] [%c{3}] [%M] [%L] [%p] %m %n" />
+		</layout>
+	</appender>
+	
+	<!-- Debug -->
+	<appender name="DebugLog" class="org.apache.log4j.DailyRollingFileAppender">
+		<!-- <param name="File" value="database.log" /> --><!-- eclipse root 에 저장됨 -->
+		<param name="File" value="../../../logs/debug.log" /><!-- development/logs에 저장 -->
+		<param name="ImmediateFlush" value="true"/>
+		<param name="encoding" value="UTF-8"/>
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<param name="Append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss}] [%c{3}] [%M] [%L] [%p] %m %n" />
+		</layout>
+	</appender>
+	
+	<!-- Database -->
+	<appender name="DatabaseLog" class="org.apache.log4j.DailyRollingFileAppender">
+		<!-- <param name="File" value="database.log" /> --><!-- eclipse root 에 저장됨 -->
+		<param name="File" value="../../../logs/database.log" /><!-- development/logs에 저장 -->
+		<param name="ImmediateFlush" value="true"/>
+		<param name="encoding" value="UTF-8"/>
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<param name="Append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss}] [%c{3}] %m %n" />
+		</layout>
+	</appender>
+
+	<!-- Application Loggers -->
+	<logger name="kr.co.insoft">
+		<level value="info" />
+	</logger>
+
+	<logger name="kr.co.insoft" additivity="false">
+		<level value="debug"/>
+		<appender-ref ref="DebugLog"/>
+	</logger>
+
+	<!-- 쿼리 로그에 출력 -->
+	<logger name="jdbc.resultsettable" additivity="false">
+		<level value="debug" />
+		<appender-ref ref="DatabaseLog"/>
+		<appender-ref ref="DebugLog"/>
+	</logger>
+	<logger name="jdbc.sqlonly" additivity="false">
+		<level value="debug" />
+		<appender-ref ref="DatabaseLog"/>
+		<appender-ref ref="DebugLog"/>
+	</logger>
+	<logger name="net.sf.log4jdbc" additivity="false">
+		<level value="info" />
+		<appender-ref ref="DatabaseLog"/>
+		<appender-ref ref="DebugLog"/>
+	</logger>
+
+	<!-- 3rdparty Loggers -->
+	<logger name="org.springframework.core">
+		<level value="info" />
+	</logger>
+
+	<logger name="org.springframework.beans">
+		<level value="info" />
+	</logger>
+
+	<logger name="org.springframework.context">
+		<level value="info" />
+	</logger>
+
+	<logger name="org.springframework.web">
+		<level value="info" />
+	</logger>
+
+	<!-- Root Logger -->
+	<root>
+		<priority value="warn" />
+		<appender-ref ref="console" />
+		<appender-ref ref="DebugLog"/>
+	</root>
+
+</log4j:configuration>

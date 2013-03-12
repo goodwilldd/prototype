@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<!-- 
+	###########################################################
+	#  Changes the locale 
+	###########################################################
+
+	dispatcher가 가로채고 얘도 가로챔
+	가로채서 locale 을 바꿔줌
+
+	-->
+	<interceptors>
+		<beans:bean class="org.springframework.web.servlet.mvc.WebContentInterceptor" />
+		<beans:bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+			<beans:property name="paramName" value="locale"/><!-- locale parameter -->
+		</beans:bean>
+	</interceptors>
+
+	<!-- 
+	###########################################################
+	#  Saves a locale change using a cookie 
+	###########################################################
+
+	가로채서 cookie에 저장해 주겠다.
+	-->
+	<beans:bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+		<beans:property name="defaultLocale" value="ko"/><!-- 기본 locale 지정 -->
+		<beans:property name="cookieMaxAge" value="-1" />
+		<beans:property name="cookieName" value="clientLocale" />
+		<beans:property name="cookiePath" value="/client/locale" />
+	</beans:bean>
+	
+	<beans:bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<beans:property name="defaultEncoding" value="UTF-8"/>
+		<beans:property name="basenames">
+			<beans:list>
+				<beans:value>classpath:messages/message</beans:value>
+			</beans:list>
+		</beans:property>
+		<beans:property name="cacheSeconds" value="3600" /><!-- 1시간 마다 -->
+	</beans:bean>
+</beans:beans>

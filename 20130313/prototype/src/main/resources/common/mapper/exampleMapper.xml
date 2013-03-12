@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.pe.goodwilldd.example.mapper.normal.ExampleMapper">
+
+	<select id="getUserName" parameterType="string" resultType="string">
+		SELECT USER_NM FROM tb_cm_user WHERE USER_ID = #{userId}
+	</select>
+
+</mapper>
